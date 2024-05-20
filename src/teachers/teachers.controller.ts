@@ -1,34 +1,51 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	Post,
+	Body,
+	Patch,
+	Param,
+	Delete,
+	HttpCode,
+} from '@nestjs/common';
 import { TeachersService } from './teachers.service';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { CustomBadRequestApiResponse, CustomSuccessfulApiResponse } from '../global/api-responses';
 
 @Controller('teachers')
+@ApiTags('teachers')
 export class TeachersController {
-  constructor(private readonly teachersService: TeachersService) {}
+	constructor(private readonly teachersService: TeachersService) { }
 
-  @Post()
-  create(@Body() createTeacherDto: CreateTeacherDto) {
-    return this.teachersService.create(createTeacherDto);
-  }
+	// @Post()
+	// async create() {
+	// 	return await this.teachersService.create();
+	// }
 
-  @Get()
-  findAll() {
-    return this.teachersService.findAll();
-  }
+	@Get()
+	async findAll() {
+		return await this.teachersService.findAll();
+	}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.teachersService.findOne(+id);
-  }
+	@Get(':id')
+	async findOne(@Param('id') id: string) {
+		return this.teachersService.findOne(id);
+	}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
-    return this.teachersService.update(+id, updateTeacherDto);
-  }
+	@CustomSuccessfulApiResponse(200, 'update teacher successfully', null)
+	@CustomBadRequestApiResponse('Teacher not found')
+	@Patch(':id')
+	@HttpCode(200)
+	async update(
+		@Param('id') id: string,
+		@Body() updateTeacherDto: UpdateTeacherDto,
+	) {
+		return await this.teachersService.update(id, updateTeacherDto);
+	}
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.teachersService.remove(+id);
-  }
+	@Delete(':id')
+	async remove(@Param('id') id: string) {
+		return await this.teachersService.remove(id);
+	}
 }

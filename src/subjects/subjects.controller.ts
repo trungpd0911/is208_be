@@ -1,34 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	Post,
+	Body,
+	Patch,
+	Param,
+	Delete,
+} from '@nestjs/common';
 import { SubjectsService } from './subjects.service';
-import { CreateSubjectDto } from './dto/create-subject.dto';
-import { UpdateSubjectDto } from './dto/update-subject.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('subjects')
+@ApiTags('subjects')
 export class SubjectsController {
-  constructor(private readonly subjectsService: SubjectsService) {}
+	constructor(private readonly subjectsService: SubjectsService) {}
 
-  @Post()
-  create(@Body() createSubjectDto: CreateSubjectDto) {
-    return this.subjectsService.create(createSubjectDto);
-  }
+	@Post()
+	async create() {
+		return await this.subjectsService.create();
+	}
 
-  @Get()
-  findAll() {
-    return this.subjectsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subjectsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto) {
-    return this.subjectsService.update(+id, updateSubjectDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subjectsService.remove(+id);
-  }
+	@Get()
+	async findAll() {
+		return await this.subjectsService.findAll();
+	}
 }

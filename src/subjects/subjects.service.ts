@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSubjectDto } from './dto/create-subject.dto';
-import { UpdateSubjectDto } from './dto/update-subject.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Subject } from '../schemas/Subject.schema';
+import { Model } from 'mongoose';
+import { subjectData } from './data';
+import { responseData } from '../global/globalClass';
 
 @Injectable()
 export class SubjectsService {
-  create(createSubjectDto: CreateSubjectDto) {
-    return 'This action adds a new subject';
-  }
+	constructor(
+		@InjectModel(Subject.name) private subjectModel: Model<Subject>,
+	) { }
+	async create() {
+		try {
+			await this.subjectModel.deleteMany({});
+			await this.subjectModel.insertMany(subjectData);
+			return 'Subjects have been added';
+		} catch (error) {
+			throw error;
+		}
+	}
 
-  findAll() {
-    return `This action returns all subjects`;
-  }
+	async findAll() {
+		try {
 
-  findOne(id: number) {
-    return `This action returns a #${id} subject`;
-  }
-
-  update(id: number, updateSubjectDto: UpdateSubjectDto) {
-    return `This action updates a #${id} subject`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} subject`;
-  }
+			const allSubjects = await this.subjectModel.find();
+			return new responseData(allSubjects, 200, 'Subjects fetched successfully');
+		} catch (error) {
+			throw error;
+		}
+	}
 }

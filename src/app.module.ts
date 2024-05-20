@@ -69,6 +69,7 @@ import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 		SubjectsModule,
 		ClassesModule,
 		LessonsModule,
-		HistoryLessonsModule],
+		HistoryLessonsModule,
+	],
 })
-export class AppModule { }
+export class AppModule {}

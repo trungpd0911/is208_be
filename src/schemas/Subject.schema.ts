@@ -1,8 +1,9 @@
-import { Prop, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
+@Schema({ timestamps: true })
 export class Subject {
-    @Prop({ required: true })
-    subjectName: string;
+	@Prop({ required: true })
+	subjectName: string;
 }
 
 export const SubjectSchema = SchemaFactory.createForClass(Subject);

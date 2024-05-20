@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { stuData } from './data';
+import { InjectModel } from '@nestjs/mongoose';
+import { Student } from '../schemas/Student.schema';
+import { Model } from 'mongoose';
+import { responseData } from '../global/globalClass';
+import { Class } from '../schemas/Class.schema';
 
 @Injectable()
 export class StudentsService {
-  create(createStudentDto: CreateStudentDto) {
-    return 'This action adds a new student';
-  }
+	constructor(
+		@InjectModel(Student.name) private studentModel: Model<Student>,
+		@InjectModel(Class.name) private classModel: Model<Class>,
+	) { }
 
-  findAll() {
-    return `This action returns all students`;
-  }
+	create(createStudentDto: CreateStudentDto) {
+		return 'This action adds a new student';
+	}
 
-  findOne(id: number) {
-    return `This action returns a #${id} student`;
-  }
+	async createFakeData() {
+		try {
+			for (let i = 0; i < stuData.length; i++) {
+				const classId = stuData[i].class;
+				const classData = await this.classModel.findById(classId);
+				if (!classData) {
+					console.log(classId);
+					throw new BadRequestException('Class not found');
+				}
+				const student = new this.studentModel(stuData[i]);
+				await student.save();
+			}
+			return new responseData(null, 201, 'Fake data created successfully');
+		} catch (error) {
+			throw error;
+		}
+	}
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
-  }
+	findAll() {
+		return `This action returns all students`;
+	}
 
-  remove(id: number) {
-    return `This action removes a #${id} student`;
-  }
+	findOne(id: number) {
+		return `This action returns a #${id} student`;
+	}
 }

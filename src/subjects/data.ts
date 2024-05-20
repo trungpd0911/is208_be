@@ -1,0 +1,15 @@
+export const subjectData = [
+    {subjectName: 'Ngoại Ngữ'},
+    {subjectName: "Lý"},
+    {subjectName: "Hóa"},
+    {subjectName: "Toán"},
+    {subjectName: "Văn"},
+    {subjectName: "Sử"},
+    {subjectName: "Địa"},
+    {subjectName: "Sinh "},
+    {subjectName: "Công Nghệ"},
+    {subjectName: "Tin Học"},
+    {subjectName: "Giáo Dục Công Dân"},
+    {subjectName: "Thể Dục"},
+    {subjectName: "Sinh Hoạt"},
+]
