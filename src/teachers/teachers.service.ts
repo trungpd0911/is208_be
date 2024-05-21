@@ -24,19 +24,6 @@ export class TeachersService {
 		const checkPassword = await bcrypt.compare(password, hash);
 		return checkPassword;
 	}
-	// write for me a function to change all the password in the database to hash password (12345678) and save 
-	async hashAllPassword() {
-		try {
-			const teachers = await this.teacherModel.find();
-			for (let i = 0; i < teachers.length; i++) {
-				teachers[i].password = await this.hashPassword('12345678');
-				await teachers[i].save();
-			}
-			return new responseData(null, 200, 'Hash all password successfully');
-		} catch (error) {
-			throw error;
-		}
-	}
 
 	async create() {
 		try {
@@ -63,12 +50,24 @@ export class TeachersService {
 		}
 	}
 
-	findOne(id: string) {
+	async getCurrentTeacher(id: string) {
+		try {
+			const teacher = await this.teacherModel.findById(id).select('-__v -createdAt -updatedAt -password');
+			if (!teacher) {
+				throw new BadRequestException('Teacher not found');
+			}
+			return new responseData(teacher, 200, 'get current teacher successfully');
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	async findOne(id: string) {
 		if (!mongoose.Types.ObjectId.isValid(id)) {
 			throw new BadRequestException('Invalid teacher id');
 		}
 		try {
-			const teacher = this.teacherModel.findOne({ teacherId: id });
+			const teacher = await this.teacherModel.findOne({ teacherId: id });
 			if (!teacher) {
 				throw new BadRequestException('Teacher not found');
 			}
@@ -83,7 +82,7 @@ export class TeachersService {
 			throw new BadRequestException('Invalid teacher id');
 		}
 		try {
-			const teacher = await this.teacherModel.findOne({ teacherId: id });
+			const teacher = await this.teacherModel.findById(id);
 			if (!teacher) {
 				throw new BadRequestException('Teacher not found');
 			}
@@ -101,16 +100,14 @@ export class TeachersService {
 			throw new BadRequestException('Invalid teacher id');
 		}
 		try {
-			const teacher = await this.teacherModel.findOne({ teacherId: id });
+			const teacher = await this.teacherModel.findByIdAndDelete(id);
 			if (!teacher) {
 				throw new BadRequestException('Teacher not found');
 			}
-			await this.teacherModel.findByIdAndDelete(teacher._id);
-			return new responseData(null, 200, 'remove teacher successfully');
+			return new responseData(null, 200, 'delete teacher successfully');
 		} catch (error) {
 			throw error;
 		}
-
 	}
 
 	async findTeacherById(id: string) {

@@ -1,6 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
 import { stuData } from './data';
 import { InjectModel } from '@nestjs/mongoose';
 import { Student } from '../schemas/Student.schema';
@@ -14,10 +12,6 @@ export class StudentsService {
 		@InjectModel(Student.name) private studentModel: Model<Student>,
 		@InjectModel(Class.name) private classModel: Model<Class>,
 	) { }
-
-	create(createStudentDto: CreateStudentDto) {
-		return 'This action adds a new student';
-	}
 
 	async createFakeData() {
 		try {
@@ -35,13 +29,5 @@ export class StudentsService {
 		} catch (error) {
 			throw error;
 		}
-	}
-
-	findAll() {
-		return `This action returns all students`;
-	}
-
-	findOne(id: number) {
-		return `This action returns a #${id} student`;
 	}
 }

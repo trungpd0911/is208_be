@@ -23,8 +23,8 @@ export class SubjectsService {
 	async findAll() {
 		try {
 
-			const allSubjects = await this.subjectModel.find();
-			return new responseData(allSubjects, 200, 'Subjects fetched successfully');
+			const allSubjects = await this.subjectModel.find().select("-__v -createdAt -updatedAt");
+			return new responseData(allSubjects, 200, 'get all subjects successfully');
 		} catch (error) {
 			throw error;
 		}

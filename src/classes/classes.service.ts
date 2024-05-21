@@ -1,6 +1,5 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateClassDto } from './dto/create-class.dto';
-import { UpdateClassDto } from './dto/update-class.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Class } from '../schemas/Class.schema';
 import mongoose, { Model } from 'mongoose';

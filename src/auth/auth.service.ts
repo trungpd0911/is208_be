@@ -64,7 +64,7 @@ export class AuthService {
 		try {
 			const checkUser = await this.teacherModel.findOne({
 				email: loginUser.email,
-			});
+			}).select("-__v -createdAt -updatedAt");
 			if (!checkUser) {
 				throw new BadRequestException('wrong email or password');
 			}
