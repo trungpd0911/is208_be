@@ -14,12 +14,13 @@ export class ClassesService {
 		@InjectModel(Class.name) private classModel: Model<Class>,
 		@InjectModel(Student.name) private studentModel: Model<Student>,
 		private teacherService: TeachersService,
-	) { }
+	) {}
 
 	async create(createClassDto: CreateClassDto) {
 		try {
 			const teacherId = createClassDto.formTeacher;
-			const teacher = await this.teacherService.findTeacherById(teacherId);
+			const teacher =
+				await this.teacherService.findTeacherById(teacherId);
 			if (!teacher) {
 				throw new BadRequestException('Teacher not found');
 			}
@@ -35,7 +36,8 @@ export class ClassesService {
 		try {
 			for (let i = 0; i < classData.length; i++) {
 				const teacherId = classData[i].formTeacher;
-				const teacher = await this.teacherService.findTeacherById(teacherId);
+				const teacher =
+					await this.teacherService.findTeacherById(teacherId);
 				if (!teacher) {
 					console.log(teacherId);
 					throw new BadRequestException('Teacher not found');
@@ -51,8 +53,14 @@ export class ClassesService {
 
 	async findAll() {
 		try {
-			const classes = await this.classModel.find();
-			return new responseData(classes, 200, 'Classes fetched successfully');
+			const classes = await this.classModel
+				.find()
+				.select('-__v -createdAt -updatedAt');
+			return new responseData(
+				classes,
+				200,
+				'get all classes successfully',
+			);
 		} catch (error) {
 			throw error;
 		}
@@ -67,9 +75,16 @@ export class ClassesService {
 			if (!classFound) {
 				throw new BadRequestException('Class not found');
 			}
-			const students = await this.studentModel.find({ class: id });
+			const students = await this.studentModel
+				.find({ class: id })
+				.populate('class', '-__v -createdAt -updatedAt')
+				.select('-__v -createdAt -updatedAt');
 			// const students = await this.classModel.findById(id).populate('students');
-			return new responseData(students, 200, 'Students fetched successfully');
+			return new responseData(
+				students,
+				200,
+				'get all students of class successfully',
+			);
 		} catch (error) {
 			throw error;
 		}

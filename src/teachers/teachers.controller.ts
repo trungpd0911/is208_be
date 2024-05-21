@@ -13,14 +13,17 @@ import {
 import { TeachersService } from './teachers.service';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CustomBadRequestApiResponse, CustomSuccessfulApiResponse } from '../global/api-responses';
+import {
+	CustomBadRequestApiResponse,
+	CustomSuccessfulApiResponse,
+} from '../global/api-responses';
 import { AuthGuard } from '../guards/auth.guard';
 import { RoleGuard } from '../guards/role.guard';
 
 @Controller('teachers')
 @ApiTags('teachers')
 export class TeachersController {
-	constructor(private readonly teachersService: TeachersService) { }
+	constructor(private readonly teachersService: TeachersService) {}
 
 	// @Post()
 	// async create() {
@@ -28,13 +31,15 @@ export class TeachersController {
 	// }
 
 	@ApiBearerAuth()
-	@CustomSuccessfulApiResponse(200, 'get all teachers successfully', [{
-		"_id": "6640a207929a820bc54517d0",
-		"teacherName": "Phan Đình Thế Trung",
-		"email": "phandinhthetrung@gmail.com",
-		"mainSubject": "66408cd5108e84eabf17dd7b",
-		"role": "user"
-	}])
+	@CustomSuccessfulApiResponse(200, 'get all teachers successfully', [
+		{
+			_id: '6640a207929a820bc54517d0',
+			teacherName: 'Phan Đình Thế Trung',
+			email: 'phandinhthetrung@gmail.com',
+			mainSubject: '66408cd5108e84eabf17dd7b',
+			role: 'user',
+		},
+	])
 	@UseGuards(new RoleGuard(['admin']))
 	@UseGuards(AuthGuard)
 	@Get()
@@ -43,18 +48,16 @@ export class TeachersController {
 	}
 
 	@CustomSuccessfulApiResponse(200, 'get current teacher successfully', {
-		"_id": "6640a207929a820bc54517d0",
-		"teacherName": "Phan Đình Thế Trung",
-		"email": "phandinhthetrung@gmail.com",
-		"mainSubject": "66408cd5108e84eabf17dd7b",
-		"role": "user"
+		_id: '6640a207929a820bc54517d0',
+		teacherName: 'Phan Đình Thế Trung',
+		email: 'phandinhthetrung@gmail.com',
+		mainSubject: '66408cd5108e84eabf17dd7b',
+		role: 'user',
 	})
 	@ApiBearerAuth()
 	@UseGuards(AuthGuard)
 	@Get('/currentTeacher')
-	async getCurrentTeacher(
-		@Request() req,
-	) {
+	async getCurrentTeacher(@Request() req) {
 		const id = req.currentUser._id;
 		return await this.teachersService.getCurrentTeacher(id);
 	}
@@ -63,11 +66,11 @@ export class TeachersController {
 	@UseGuards(new RoleGuard(['admin']))
 	@UseGuards(AuthGuard)
 	@CustomSuccessfulApiResponse(200, 'get teacher by id successfully', {
-		"_id": "6640a207929a820bc54517d0",
-		"teacherName": "Phan Đình Thế Trung",
-		"email": "phandinhthetrung@gmail.com",
-		"mainSubject": "66408cd5108e84eabf17dd7b",
-		"role": "user"
+		_id: '6640a207929a820bc54517d0',
+		teacherName: 'Phan Đình Thế Trung',
+		email: 'phandinhthetrung@gmail.com',
+		mainSubject: '66408cd5108e84eabf17dd7b',
+		role: 'user',
 	})
 	@Get(':id')
 	async findOne(@Param('id') id: string) {

@@ -11,7 +11,7 @@ import * as bcrypt from 'bcrypt';
 export class TeachersService {
 	constructor(
 		@InjectModel(Teacher.name) private teacherModel: Model<Teacher>,
-	) { }
+	) {}
 
 	async hashPassword(password: string): Promise<string> {
 		const saltRounds = 10;
@@ -43,8 +43,14 @@ export class TeachersService {
 
 	async findAll() {
 		try {
-			const teachers = await this.teacherModel.find().select('-__v -createdAt -updatedAt -password');
-			return new responseData(teachers, 200, 'get all teacherrs successfully');
+			const teachers = await this.teacherModel
+				.find()
+				.select('-__v -createdAt -updatedAt -password');
+			return new responseData(
+				teachers,
+				200,
+				'get all teacherrs successfully',
+			);
 		} catch (error) {
 			throw error;
 		}
@@ -52,11 +58,17 @@ export class TeachersService {
 
 	async getCurrentTeacher(id: string) {
 		try {
-			const teacher = await this.teacherModel.findById(id).select('-__v -createdAt -updatedAt -password');
+			const teacher = await this.teacherModel
+				.findById(id)
+				.select('-__v -createdAt -updatedAt -password');
 			if (!teacher) {
 				throw new BadRequestException('Teacher not found');
 			}
-			return new responseData(teacher, 200, 'get current teacher successfully');
+			return new responseData(
+				teacher,
+				200,
+				'get current teacher successfully',
+			);
 		} catch (error) {
 			throw error;
 		}
@@ -71,7 +83,11 @@ export class TeachersService {
 			if (!teacher) {
 				throw new BadRequestException('Teacher not found');
 			}
-			return new responseData(teacher, 200, 'get teacher by id successfully');
+			return new responseData(
+				teacher,
+				200,
+				'get teacher by id successfully',
+			);
 		} catch (error) {
 			throw error;
 		}

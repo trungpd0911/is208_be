@@ -11,8 +11,8 @@ import { SubjectSchema } from '../schemas/Subject.schema';
 			{
 				name: Subject.name,
 				schema: SubjectSchema,
-			}
-		])
+			},
+		]),
 	],
 	controllers: [SubjectsController],
 	providers: [SubjectsService],

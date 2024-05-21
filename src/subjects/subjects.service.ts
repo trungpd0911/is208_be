@@ -9,7 +9,7 @@ import { responseData } from '../global/globalClass';
 export class SubjectsService {
 	constructor(
 		@InjectModel(Subject.name) private subjectModel: Model<Subject>,
-	) { }
+	) {}
 	async create() {
 		try {
 			await this.subjectModel.deleteMany({});
@@ -22,9 +22,14 @@ export class SubjectsService {
 
 	async findAll() {
 		try {
-
-			const allSubjects = await this.subjectModel.find().select("-__v -createdAt -updatedAt");
-			return new responseData(allSubjects, 200, 'get all subjects successfully');
+			const allSubjects = await this.subjectModel
+				.find()
+				.select('-__v -createdAt -updatedAt');
+			return new responseData(
+				allSubjects,
+				200,
+				'get all subjects successfully',
+			);
 		} catch (error) {
 			throw error;
 		}

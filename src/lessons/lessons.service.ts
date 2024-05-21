@@ -1,4 +1,8 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+	BadRequestException,
+	ForbiddenException,
+	Injectable,
+} from '@nestjs/common';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { lessonData } from './data';
@@ -9,9 +13,7 @@ import { responseData } from '../global/globalClass';
 
 @Injectable()
 export class LessonsService {
-	constructor(
-		@InjectModel(Lesson.name) private lessonModel: Model<Lesson>,
-	) { }
+	constructor(@InjectModel(Lesson.name) private lessonModel: Model<Lesson>) {}
 
 	create(createLessonDto: CreateLessonDto) {
 		return 'This action adds a new lesson';
@@ -30,7 +32,7 @@ export class LessonsService {
 						class: lesson.class,
 						offStudent: lesson.offStudent,
 						status: lesson.status,
-					})
+					});
 				}),
 			);
 			return new responseData(null, 201, 'Lessons created successfully');
@@ -44,7 +46,11 @@ export class LessonsService {
 			const lessons = await this.lessonModel.find();
 			// const lessonCount = await this.lessonModel.countDocuments();
 			// console.log(lessonCount, lessonData.length);
-			return new responseData(lessons, 200, 'get all lessons successfully');
+			return new responseData(
+				lessons,
+				200,
+				'get all lessons successfully',
+			);
 		} catch (error) {
 			throw error;
 		}
@@ -63,23 +69,39 @@ export class LessonsService {
 			if (isNaN(day.getTime())) {
 				throw new BadRequestException('Invalid date');
 			}
-			day = new Date(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate(), 12, 0, 0));
+			day = new Date(
+				Date.UTC(
+					day.getFullYear(),
+					day.getMonth(),
+					day.getDate(),
+					12,
+					0,
+					0,
+				),
+			);
 			const lessons = await this.lessonModel
 				.find({ lessonDate: day })
-				.select("-__v -createdAt -updatedAt")
-				.populate("teacher", "-__v -createdAt -updatedAt -password -mainSubject")
-				.populate("class", "-__v -createdAt -updatedAt")
-				.populate("subject", "-__v -createdAt -updatedAt -password");
-			return new responseData(lessons, 200, 'get all lessons by day successfully');
+				.select('-__v -createdAt -updatedAt')
+				.populate(
+					'teacher',
+					'-__v -createdAt -updatedAt -password -mainSubject',
+				)
+				.populate('class', '-__v -createdAt -updatedAt')
+				.populate('subject', '-__v -createdAt -updatedAt -password');
+			return new responseData(
+				lessons,
+				200,
+				'get all lessons by day successfully',
+			);
 		} catch (error) {
 			throw error;
 		}
 	}
 
 	async getAllLessonsByTeacherAndDay(teacherId: string, day: Date) {
-		if(!mongoose.Types.ObjectId.isValid(teacherId)) {
+		if (!mongoose.Types.ObjectId.isValid(teacherId)) {
 			throw new BadRequestException('Invalid teacher id');
-		} 
+		}
 		if (!(day instanceof Date)) {
 			// "2024-05-27T00:12:12.000Z" => "2024-05-27T12:00:00.000Z"
 			day = new Date(day);
@@ -91,14 +113,30 @@ export class LessonsService {
 			throw new BadRequestException('Invalid date');
 		}
 		try {
-			day = new Date(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate(), 12, 0, 0));
+			day = new Date(
+				Date.UTC(
+					day.getFullYear(),
+					day.getMonth(),
+					day.getDate(),
+					12,
+					0,
+					0,
+				),
+			);
 			const lessons = await this.lessonModel
 				.find({ lessonDate: day, teacher: teacherId })
-				.select("-__v -createdAt -updatedAt")
-				.populate("teacher", "-__v -createdAt -updatedAt -password -mainSubject")
-				.populate("class", "-__v -createdAt -updatedAt")
-				.populate("subject", "-__v -createdAt -updatedAt -password");
-			return new responseData(lessons, 200, 'get all lesson in a day of a teacher successfully');
+				.select('-__v -createdAt -updatedAt')
+				.populate(
+					'teacher',
+					'-__v -createdAt -updatedAt -password -mainSubject',
+				)
+				.populate('class', '-__v -createdAt -updatedAt')
+				.populate('subject', '-__v -createdAt -updatedAt -password');
+			return new responseData(
+				lessons,
+				200,
+				'get all lesson in a day of a teacher successfully',
+			);
 		} catch (error) {
 			throw error;
 		}
@@ -113,8 +151,10 @@ export class LessonsService {
 			if (!lesson) {
 				throw new BadRequestException('Lesson not found');
 			}
-			if(lesson.teacher.toString() !== teacherId) {
-				throw new ForbiddenException('You are not the teacher of this lesson');
+			if (lesson.teacher.toString() !== teacherId) {
+				throw new ForbiddenException(
+					'You are not the teacher of this lesson',
+				);
 			}
 			lesson.comment = comment;
 			await lesson.save();

@@ -18,7 +18,7 @@ export class AuthService {
 	constructor(
 		@InjectModel(Teacher.name) private teacherModel: Model<Teacher>,
 		private jwtService: JwtService,
-	) { }
+	) {}
 
 	async hashPassword(password: string): Promise<string> {
 		const saltRounds = 10;
@@ -62,9 +62,11 @@ export class AuthService {
 
 	async login(loginUser: LoginUserDto) {
 		try {
-			const checkUser = await this.teacherModel.findOne({
-				email: loginUser.email,
-			}).select("-__v -createdAt -updatedAt");
+			const checkUser = await this.teacherModel
+				.findOne({
+					email: loginUser.email,
+				})
+				.select('-__v -createdAt -updatedAt');
 			if (!checkUser) {
 				throw new BadRequestException('wrong email or password');
 			}

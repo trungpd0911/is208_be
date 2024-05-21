@@ -6,8 +6,8 @@ import { Teacher } from '../schemas/Teacher.schema';
 
 @Injectable()
 export class HistoryLessonsService {
-    constructor(
-        @InjectModel(Lesson.name) private lessonModel: Model<Lesson>,
-        @InjectModel(Teacher.name) private teacherModel: Model<Teacher>,
-    ) {}
+	constructor(
+		@InjectModel(Lesson.name) private lessonModel: Model<Lesson>,
+		@InjectModel(Teacher.name) private teacherModel: Model<Teacher>,
+	) {}
 }

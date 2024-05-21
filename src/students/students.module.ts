@@ -15,10 +15,10 @@ import { Class, ClassSchema } from '../schemas/Class.schema';
 			{
 				name: Class.name,
 				schema: ClassSchema,
-			}
-		])
+			},
+		]),
 	],
 	controllers: [StudentsController],
 	providers: [StudentsService],
 })
-export class StudentsModule { }
+export class StudentsModule {}

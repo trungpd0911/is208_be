@@ -17,4 +17,4 @@ import { Teacher, TeacherSchema } from '../schemas/Teacher.schema';
 	providers: [AuthService],
 	exports: [AuthService],
 })
-export class AuthModule { }
+export class AuthModule {}

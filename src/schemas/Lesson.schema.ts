@@ -16,7 +16,7 @@ export class Lesson {
 
 	@Prop({ required: true })
 	lessonNum: number;
-	
+
 	@Prop({ required: true })
 	lessonDayInWeek: number;
 

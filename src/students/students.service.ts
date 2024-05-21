@@ -11,7 +11,7 @@ export class StudentsService {
 	constructor(
 		@InjectModel(Student.name) private studentModel: Model<Student>,
 		@InjectModel(Class.name) private classModel: Model<Class>,
-	) { }
+	) {}
 
 	async createFakeData() {
 		try {
@@ -25,7 +25,11 @@ export class StudentsService {
 				const student = new this.studentModel(stuData[i]);
 				await student.save();
 			}
-			return new responseData(null, 201, 'Fake data created successfully');
+			return new responseData(
+				null,
+				201,
+				'Fake data created successfully',
+			);
 		} catch (error) {
 			throw error;
 		}

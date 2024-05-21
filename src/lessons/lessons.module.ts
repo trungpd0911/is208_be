@@ -10,8 +10,8 @@ import { Lesson, LessonSchema } from '../schemas/Lesson.schema';
 			{
 				name: Lesson.name,
 				schema: LessonSchema,
-			}
-		])
+			},
+		]),
 	],
 	controllers: [LessonsController],
 	providers: [LessonsService],

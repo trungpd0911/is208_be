@@ -15,8 +15,8 @@ import { Teacher, TeacherSchema } from '../schemas/Teacher.schema';
 			{
 				name: Teacher.name,
 				schema: TeacherSchema,
-			}
-		])
+			},
+		]),
 	],
 	controllers: [HistoryLessonsController],
 	providers: [HistoryLessonsService],

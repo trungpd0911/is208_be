@@ -10,11 +10,11 @@ import { Teacher, TeacherSchema } from '../schemas/Teacher.schema';
 			{
 				name: Teacher.name,
 				schema: TeacherSchema,
-			}
-		])
+			},
+		]),
 	],
 	controllers: [TeachersController],
 	providers: [TeachersService],
 	exports: [TeachersService],
 })
-export class TeachersModule { }
+export class TeachersModule {}
