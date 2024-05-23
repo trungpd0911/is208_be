@@ -18,7 +18,7 @@ export class AuthService {
 	constructor(
 		@InjectModel(Teacher.name) private teacherModel: Model<Teacher>,
 		private jwtService: JwtService,
-	) {}
+	) { }
 
 	async hashPassword(password: string): Promise<string> {
 		const saltRounds = 10;
@@ -79,7 +79,7 @@ export class AuthService {
 			}
 			const { password, ...user } = checkUser.toObject();
 			const accessToken = await this.generateAccessToken(user);
-			return new responseData(accessToken, 200, 'Login successfully');
+			return new responseData({ accessToken }, 200, 'Login successfully');
 		} catch (error) {
 			throw error;
 		}
@@ -105,7 +105,7 @@ export class AuthService {
 			}
 			const { password, ...user } = checkUser.toObject();
 			const accessToken = await this.generateAccessToken(user);
-			return new responseData(accessToken, 200, 'Login successfully');
+			return new responseData({ accessToken }, 200, 'Login successfully');
 		} catch (error) {
 			throw error;
 		}
