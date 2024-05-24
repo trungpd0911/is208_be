@@ -157,6 +157,7 @@ export class LessonsService {
 				);
 			}
 			lesson.comment = comment;
+			lesson.status = true;
 			await lesson.save();
 			return new responseData(null, 200, 'comment lesson successfully');
 		} catch (error) {

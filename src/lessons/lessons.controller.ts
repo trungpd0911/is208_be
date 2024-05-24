@@ -22,7 +22,7 @@ import { RoleGuard } from '../guards/role.guard';
 @Controller('lessons')
 @ApiTags('lessons')
 export class LessonsController {
-	constructor(private readonly lessonsService: LessonsService) {}
+	constructor(private readonly lessonsService: LessonsService) { }
 
 	// @Post('/create/all')
 	// async createAll() {
@@ -63,17 +63,6 @@ export class LessonsController {
 		return await this.lessonsService.findAll();
 	}
 
-	@ApiBody({
-		schema: {
-			type: 'object',
-			properties: {
-				day: {
-					type: 'string',
-					example: '2024-05-17T00:00:00.000Z',
-				},
-			},
-		},
-	})
 	@CustomSuccessfulApiResponse(200, 'get all lessons by day successfully', [
 		{
 			_id: '664c5ead77ba18d14729c7bb',
@@ -104,24 +93,14 @@ export class LessonsController {
 	@ApiBearerAuth()
 	@UseGuards(new RoleGuard(['admin']))
 	@UseGuards(AuthGuard)
-	@Get('/day')
-	async getAllLessonsByDay(@Body('day') day: Date) {
-		// the input will be day: '2021-09-01T00:00:00.000Z'
+	@Get('/day/:day')
+	async getAllLessonsByDay(
+		@Param('day') day: Date
+	) {
 		return await this.lessonsService.getAllLessonsByDay(day);
 	}
 
 	// get all lessons of a teacher by teacherId and day
-	@ApiBody({
-		schema: {
-			type: 'object',
-			properties: {
-				day: {
-					type: 'string',
-					example: '2024-05-17T00:00:00.000Z',
-				},
-			},
-		},
-	})
 	@CustomSuccessfulApiResponse(
 		200,
 		'get all lesson in a day of a teacher successfully',
@@ -155,8 +134,11 @@ export class LessonsController {
 	@CustomBadRequestApiResponse('Invalid date')
 	@ApiBearerAuth()
 	@UseGuards(AuthGuard)
-	@Get('/allLessonOfDay')
-	async getAllLessonsByTeacherAndDay(@Request() req, @Body('day') day: Date) {
+	@Get('/teacher/day/:day')
+	async getAllLessonsByTeacherAndDay(
+		@Request() req,
+		@Param('day') day: Date
+	) {
 		const teacherId = req.currentUser._id;
 		return await this.lessonsService.getAllLessonsByTeacherAndDay(
 			teacherId,
