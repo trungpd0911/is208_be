@@ -79,7 +79,7 @@ export class TeachersService {
 			throw new BadRequestException('Invalid teacher id');
 		}
 		try {
-			const teacher = await this.teacherModel.findOne({ teacherId: id });
+			const teacher = await this.teacherModel.findById(id);
 			if (!teacher) {
 				throw new BadRequestException('Teacher not found');
 			}
